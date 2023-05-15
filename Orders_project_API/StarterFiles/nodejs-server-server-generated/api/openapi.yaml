@@ -1,0 +1,155 @@
+openapi: 3.0.1
+info:
+  title: Online Order API
+  description: A basic API for working with swagger tools
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /orders:
+    summary: Get all of the orders data.
+    description: This path is used to retreive all the orders data from the orders.json
+      file.
+    get:
+      tags:
+      - Orders
+      summary: Gets the order data
+      description: Retrieve the order informations from the order.json file.
+      operationId: get_orders
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              examples:
+                orders:
+                  value: "{\"orders\":[{\"name\":\"Carey Maynard\",\"id\":\"001\"\
+                    ,\"state\":\"pending\"},{\"name\":\"Angelo Ayala\",\"id\":\"002\"\
+                    ,\"state\":\"canceled\"},{\"name\":\"Regina Yates\",\"id\":\"\
+                    003\",\"state\":\"pending\"},{\"name\":\"Elliott Mcclure\",\"\
+                    id\":\"004\",\"state\":\"pending\"}]}"
+      x-swagger-router-controller: Orders
+  /neworder:
+    summary: This path is used to add a new order
+    description: This path is used to add a new order to the orders.json file.
+    post:
+      tags:
+      - New Order
+      summary: Adds the order data
+      description: The /neworder path uses a POST operation to add a new order to
+        the orders.json file.
+      operationId: new_order
+      requestBody:
+        description: A new order object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: NewOrder
+  /update/{id}:
+    summary: This path is used to change the status of an order matching the provided
+      id.
+    description: This path is used to change the status of an order matching the provided
+      id. It modifies the state attribute of each order.
+    put:
+      tags:
+      - Update Order
+      summary: Put new orders
+      description: This operation updates the `state` of an order with a matching
+        id from the orders.json file.
+      operationId: update_order
+      parameters:
+      - name: id
+        in: path
+        description: The id of the order.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: A state string
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: UpdateOrder
+  /delete/{id}:
+    summary: This path is used to delete an order with a matching id.
+    description: This path is used to delete an order with a matching id.
+    delete:
+      tags:
+      - Delete Order
+      summary: delete Orders
+      description: This operation deletes an order with a matching id from the orders.json
+        file
+      operationId: delete_order
+      parameters:
+      - name: id
+        in: path
+        description: The id of the order.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Message:
+                  value: Success
+        "400":
+          description: Invalid Argument Provided
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error:
+                  value: Invalid Argument
+      x-swagger-router-controller: DeleteOrder
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+        state:
+          type: string
+      xml:
+        name: Order
