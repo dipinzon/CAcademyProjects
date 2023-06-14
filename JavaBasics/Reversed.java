@@ -16,7 +16,8 @@ class Reverse {
           for(int i=0;i<text.length();i++)
           {
             if(text.charAt(i) == charToReplace)
-            {
+            { //substring containing every element that came before the current index : text.substring(0,i)
+              //substring of every element in text that appears after the current index : text.substring(i+1)
               text = text.substring(0,i) + replacement + text.substring(i+1);
             }
           }
